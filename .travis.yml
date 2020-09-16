@@ -10,7 +10,7 @@ env:
   - REPO_ROOT="$TRAVIS_BUILD_DIR"
   - CI_ROOT="$REPO_ROOT/travis-ci"
   - VMTEST_ROOT="$CI_ROOT/vmtest"
-  - secure: BWtHRVLtBB6VPU9wq3cEwYmzu5mMkF2mAPpyCPclHCksdZsDb9xf7zmSt5YoQuefCOEmbRlBfxya5vDKJwNNuNXJGxTU186h20Zve80zZtUvSV1e4c8AtHiZRswkoyENU4M7S4Ei/t5BV8mdvh4vnFy95R2kxsfThAIME3M/rstSXFd1EmpZ7vv2SZc2BUET3vVVwcM9xcupQqiX02UFozAzUMecIRYQscA9hWfg2z8DTzwtZkVZ/hchRT7bu6tvLxR0HBCguIGu4GQZtqrFVU/i3v8hOgK9MwFy+NVsOOwFtFhdMUzgwtN0owB2lZSLGpWh6AVHLNuwkOtm2MyrhfeW908/S1LFCmhvMw65CTrKVTxx9+Vb+DiRYrb2I7Y+30fxIe5s+kA8Kyn7fbwkKBPzE1nqBNwI1y00EFiSZaSkl/twpp2jRCONg2i1YiHSLDmwzVWiLIFtbXBRm2p8bPnMFuphRoAfSCXHhiGQxz7UhBZMX4Tm9ZcQACff3HpRVHBuQazzMIO51jRdJguwXg9CJ9QBN7aMqUBBv1L8hzk2NQguQHGKGkgfXshHer0a073aiLItSotWoNIILVKSyawjNkMLey/ExN/ouTTwtctOkiAAU5TMcoWD3fHjEp4B8+/3Mj2hdAU2Uc8SNMIg7G1j++XdIRRG3bJoj3CkMHM=
+  - secure: "wlcELYaobpjU0CfVYahRltEt1sK53plocu/UvEjJAYo0Sr5uygAbLWue7UgH17izMKz1czWot9FYeCo14zcBI1Z2V419JkF1o3a2o/PvrsZM6ljTjJvenAdDBrHjlxj+11n9dLbIOjHvKyJvCG62cI+bBZfornGxHLonb08FrXZGcw46W6L/fvNJXG9BDa6/tCtAEpW7hs0qDAuROPF8aGgF9DADIYPMvY1Pp4AfKWauHpvUnDGGOKb/VnnkUdtEsIZ3Fddvbh3t4e4fJFMsr/z2kSPAJ/KmaR5/bGKmKnDlND9SUPFVxYw1Wt79CM4cEE4iFsAEFBIzKva2f3ynP4ayzottQ2vnKwxS1/MWW3fmofNdXc/f6+pWEDbxw/NZTomoM4hdxALw3C97yZWkiIQWwxebsNYoKkTYHSjoagLfRnxwGI8eaRmvqR3nUF5C8Zy6LIjS6RehULXrvVh714T94hEev62NB4GwG11eBHBJaKO/HuLspqEO+yMa6cd2HmQ4DGh8QnELNNG0kiBv7oMkJaygpqkTnLYPbQL3eId8lQspt3X/1tcp9FKdBglvlVzh3zWctUXY6xcFpvSqJMvKDatHZqIQO6Z1T1iW4CGt0WjYvxoILiMF+cmiGrWaFwOUFET+lisxxzaav7ft/UAkmN+/q8uOeqlSLGW92Hg="
 addons:
   apt:
     packages:
@@ -22,11 +22,15 @@ addons:
     - libelf-dev
     - libdw-dev
     - python3-docutils
+    - python3-pip
+    - python3-setuptools
+    - python3-dev
+    - python3-wheel
 jobs:
   include:
   - stage: Builds & Tests
     name: Kernel LATEST + selftests
     language: bash
     env: KERNEL=LATEST
-    script: "$CI_ROOT/vmtest/run_vmtest.sh"
-    after_failure: "pip install -r $CI_ROOT/github/requirements.txt && cat $CI_ROOT/vmtest/report | $CI_ROOT/github/gh.py comment"
+    script: "echo TEST > $CI_ROOT/vmtest/report && false"
+    after_failure: "pip3 install -r $CI_ROOT/github/requirements.txt && cat $CI_ROOT/vmtest/report | $CI_ROOT/github/gh.py comment"

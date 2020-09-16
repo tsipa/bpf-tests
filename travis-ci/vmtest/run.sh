@@ -443,12 +443,16 @@ qemu-system-x86_64 -nodefaults -display none -serial mon:stdio \
 sudo mount -o loop "$IMG" "$mnt"
 if exitstatus="$(cat "$mnt/exitstatus" 2>/dev/null)"; then
 	printf '\nTests exit status: %s\n' "$exitstatus" >&2
+  # TODO REMOVE
+  printf '\nCould not read tests exit status\n' | tee -a ${VMTEST_ROOT}/report >&2
 else
 	printf '\nCould not read tests exit status\n' | tee -a ${VMTEST_ROOT}/report >&2
 	exitstatus=1
 fi
 if [ -f "$mnt/dmesg" ]; then
         ! grep "$mnt/dmesg" "RIP" -C 20 | tee -a ${VMTEST_ROOT}/report >&2
+        # TODO REMOVE
+        grep "$mnt/dmesg" "linux" -C 20 | tee -a ${VMTEST_ROOT}/report >&2
         exitstatus=$(($exitstatus + $?))
 else
         # we don't have dmesg?

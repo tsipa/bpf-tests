@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+
 import argparse
 from github import Github, GithubException
 import os
 import sys
+
 
 class GH(object):
     def get_repo(self, git, project):
@@ -13,7 +16,6 @@ class GH(object):
             org = os.path.split(project)[0].split(":")[-1]
             repo = git.get_organization(org).get_repo(repo_name)
         return repo
-
 
     def __init__(self):
         for k in ["GH_TOKEN", "TRAVIS_REPO_SLUG", "TRAVIS_PULL_REQUEST"]:
@@ -28,12 +30,11 @@ class GH(object):
     def comment(self, text):
         self.current_pr.create_issue_comment(text)
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Github helper for travis CI")
     parser.add_argument(
-        "action",
-        choices=["comment"],
-        help="Append stdin as a comment to PR",
+        "action", choices=["comment"], help="Append stdin as a comment to PR"
     )
     args = parser.parse_args()
     return args
@@ -49,4 +50,3 @@ if args.action == "comment":
     text = "\n".join(text)
 
     g.comment(text)
-
